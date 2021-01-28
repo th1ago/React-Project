@@ -1,18 +1,19 @@
 import styled from 'styled-components'
 import db from '../db.json';
+import Widget from '../src/components/Widget'
+import QuizLogo from '../src/components/QuizLogo'
+import QuizBackground from '../src/components/QuizBackground'
+import Footer from '../src/components/Footer'
+import GitHubCorner from '../src/components/GitHubCorner'
 
-const Title = styled.h1`
-  font-size: 50px;
-  color: ${({ theme }) => theme.colors.primary};
-`
-const BackgroundImage = styled.div`
-   background-image: url(${db.bg});
-   flex: 1;
-   background-size: cover;
-   background-position: center;
-`;
+// const BackgroundImage = styled.div`
+//   background-image: url(${db.bg});
+//   flex: 1;
+//   background-size: cover;
+//   background-position: center;
+// `;
 
-const QuizContainer = styled.div`
+export const QuizContainer = styled.div`
   width: 100%;
   max-width: 350px;
   padding-top: 45px;
@@ -23,35 +24,30 @@ const QuizContainer = styled.div`
   }
 `;
 
-const Widget = styled.div`
-  margin-top: 24px;
-  margin-bottom: 24px;
-  border: 1px solid ${({ theme }) => theme.colors.primary};
-  background-color: ${({ theme }) => theme.colors.mainBg};
-  border-radius: 4px;
-  overflow: hidden;
-
-  h1, h2, h3 {
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 1;
-    margin-bottom: 0;
-  }
-  p {
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1;
-  }
-`;
-
 export default function Home() {
   return (
-    <BackgroundImage>
+    <QuizBackground backgroundImage={db.bg}>
       <QuizContainer>
-      <Widget>
-        teste
-      </Widget>
+        <QuizLogo />
+        <Widget>
+          <Widget.Header>
+            <h1>{db.title}</h1>
+          </Widget.Header>
+          <Widget.Content>
+            <p>{db.description}</p>
+          </Widget.Content>
+        </Widget>
+
+        <Widget>
+          <Widget.Content>
+            <h1>Quizes da Galera</h1>
+
+            <p>lorem ipsum dolor sit amet...</p>
+          </Widget.Content>
+        </Widget>
+        <Footer />
       </QuizContainer>
-    </BackgroundImage>
+      <GitHubCorner projectUrl="https://github.com/th1ago" />
+    </QuizBackground>
   );
 }
