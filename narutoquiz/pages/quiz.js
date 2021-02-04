@@ -19,7 +19,9 @@ function LoadingWidget() {
   );
 }
 
-export default function QuizDaGaleraPage() {
+export default function QuizPage() {
+  const question = db.questions[0];
+
   return (
     <QuizBackground backgroundImage={db.bg}>
       <QuizContainer>
@@ -36,8 +38,8 @@ export default function QuizDaGaleraPage() {
           </Widget.Header>
           <img alt="descricao" style={{ width: '100%', height: '150px', objectFit: 'cover' }} src="https://placehold.it/400x400" />
           <Widget.Content>
-            <h2>Titulo</h2>
-            <p>Descricao</p>
+            <h2>{question.title}</h2>
+            <p>{question.description}</p>
             <Button>
               Confirmar
             </Button>
