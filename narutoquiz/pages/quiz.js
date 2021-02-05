@@ -19,32 +19,57 @@ function LoadingWidget() {
   );
 }
 
+function QuestionWidget({ question, totalQuestion, questionIndex }) {
+  const questionId = `question__${questionIndex}`;
+  return (
+    <Widget>
+      <Widget.Header>
+        {/* <BackLinkArrow href="/" /> */}
+        <h3>
+          {`Pergunta ${questionIndex + 1} de ${totalQuestion}`}          
+        </h3>
+      </Widget.Header>
+      <img alt="descricao" style={{ width: '100%', height: '150px', objectFit: 'cover' }} src={question.image} />
+      
+      <form>
+        {question.alternatives.map((alternative, alternativeIndex) => {
+          const alternativeId = `question__${questionIndex}`;
+          return (
+            <Widget.Topic as="label" htmlFpr={alternativeId}>
+                <input id={alternativeId} name={questionId} type="radio">
+                </input>
+                {alternative}              
+            </Widget.Topic>
+          )
+        })}
+      </form>
+      
+      
+      <Widget.Content>
+        <h2>{question.title}</h2>
+        <p>{question.description}</p>
+        <Button type="submit">
+          Confirmar
+        </Button>
+      </Widget.Content>
+    </Widget>
+  );
+}
+
 export default function QuizPage() {
-  const question = db.questions[0];
+  const totalQuestion = db.questions.length;
+  const questionIndex = 0;
+  const question = db.questions[questionIndex];
 
   return (
     <QuizBackground backgroundImage={db.bg}>
       <QuizContainer>
         <QuizLogo />
-        <Widget>
-          <Widget.Header>
-            {/* <BackLinkArrow href="/" /> */}
-            <h3>
-              Pergunta
-              1
-              de
-              {`${db.questions.length}`}
-            </h3>
-          </Widget.Header>
-          <img alt="descricao" style={{ width: '100%', height: '150px', objectFit: 'cover' }} src="https://placehold.it/400x400" />
-          <Widget.Content>
-            <h2>{question.title}</h2>
-            <p>{question.description}</p>
-            <Button>
-              Confirmar
-            </Button>
-          </Widget.Content>
-        </Widget>
+        <QuestionWidget 
+          question={question} 
+          totalQuestion={totalQuestion}
+          questionIndex={questionIndex}
+        />
         <LoadingWidget />
       </QuizContainer>
     </QuizBackground>
