@@ -13,13 +13,13 @@ function LoadingWidget() {
         Carregando...
       </Widget.Header>
       <Widget.Content>
-        [Desafio LOading]
+        [Desafio Loading]
       </Widget.Content>
     </Widget>
   );
 }
 
-function QuestionWidget({ question, totalQuestion, questionIndex }) {
+function QuestionWidget({ question, totalQuestion, questionIndex, onSubmit }) {
   const questionId = `question__${questionIndex}`;
   return (
     <Widget>
@@ -31,9 +31,13 @@ function QuestionWidget({ question, totalQuestion, questionIndex }) {
       </Widget.Header>
       <img alt="descricao" style={{ width: '100%', height: '150px', objectFit: 'cover' }} src={question.image} />
       
-      <form>
+      <form onSubmit= {(infosDoEvento) => {
+        infosDoEvento.preventDefault();
+        onSubmit();
+      }}>
+
         {question.alternatives.map((alternative, alternativeIndex) => {
-          const alternativeId = `question__${questionIndex}`;
+          const alternativeId = `alternative__${alternativeIndex}`;
           return (
             <Widget.Topic as="label" htmlFpr={alternativeId}>
                 <input id={alternativeId} name={questionId} type="radio">
@@ -59,13 +63,13 @@ const screenStates = {
   QUIZ: 'Quiz',
   LOADING: 'Loading',
   RESULT: 'Result'
-}
-
+};
 
 export default function QuizPage() {
   const [screenState, setScreenState] = React.useState(screenStates.LOADING)
-  const totalQuestion = db.questions.length;
-  const questionIndex = 0;
+  const totalQuestions = db.questions.length;
+  const [currentQuestion, setCurrentQuestion] = React.useState(0);
+  const questionIndex = currentQuestion;
   const question = db.questions[questionIndex];
 
   React.useEffect(() => {
@@ -74,17 +78,28 @@ export default function QuizPage() {
     }, 1 * 1000);
   }, []);
 
+  function handleSubmit(){
+    const nextQuestion = questionIndex + 1;
+    if (nextQuestion < totalQuestions) {
+      setCurrentQuestion(questionIndex + 1);
+    } else {
+      setCurrentQuestion(screenStates.RESULT);
+    }
+  }
+
   return (
     <QuizBackground backgroundImage={db.bg_quiz}>
       <QuizContainer>
         <QuizLogo />
         {screenState === screenStates.QUIZ && (
         <QuestionWidget
-          question={question} 
-          totalQuestion={totalQuestion}
+          question={question}
           questionIndex={questionIndex}
+          totalQuestion={totalQuestions}
+          onSubmit={handleSubmit}
         />)}
-        {screenState === screenStates.QUIZ && <LoadingWidget />}
+        {screenState === screenStates.LOADING && <LoadingWidget />}
+        {screenState === screenStates.RESULT && <div>Okay okay</div>}
       </QuizContainer>
     </QuizBackground>
   );
