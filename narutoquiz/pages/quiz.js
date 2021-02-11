@@ -44,7 +44,6 @@ function QuestionWidget({ question, totalQuestion, questionIndex }) {
         })}
       </form>
       
-      
       <Widget.Content>
         <h2>{question.title}</h2>
         <p>{question.description}</p>
@@ -56,21 +55,36 @@ function QuestionWidget({ question, totalQuestion, questionIndex }) {
   );
 }
 
+const screenStates = {
+  QUIZ: 'Quiz',
+  LOADING: 'Loading',
+  RESULT: 'Result'
+}
+
+
 export default function QuizPage() {
+  const [screenState, setScreenState] = React.useEffect(screenStates.LOADING)
   const totalQuestion = db.questions.length;
   const questionIndex = 0;
   const question = db.questions[questionIndex];
 
+  React.useEffect(() => {
+    setTimeout(() => {
+      setScreenState(screenState === screenStates.QUIZ)
+    }, 1 * 1000);
+  }, []);
+
   return (
-    <QuizBackground backgroundImage={db.bg}>
+    <QuizBackground backgroundImage={db.bg_quiz}>
       <QuizContainer>
         <QuizLogo />
-        <QuestionWidget 
+        {screenState === screenStats.QUIZ && (
+        <QuestionWidget
           question={question} 
           totalQuestion={totalQuestion}
           questionIndex={questionIndex}
-        />
-        <LoadingWidget />
+        />)}
+        {screenState === screenStates.QUIZ && <LoadingWidget />}
       </QuizContainer>
     </QuizBackground>
   );
