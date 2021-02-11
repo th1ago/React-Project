@@ -63,7 +63,7 @@ const screenStates = {
 
 
 export default function QuizPage() {
-  const [screenState, setScreenState] = React.useEffect(screenStates.LOADING)
+  const [screenState, setScreenState] = React.useState(screenStates.LOADING)
   const totalQuestion = db.questions.length;
   const questionIndex = 0;
   const question = db.questions[questionIndex];
@@ -78,7 +78,7 @@ export default function QuizPage() {
     <QuizBackground backgroundImage={db.bg_quiz}>
       <QuizContainer>
         <QuizLogo />
-        {screenState === screenStats.QUIZ && (
+        {screenState === screenStates.QUIZ && (
         <QuestionWidget
           question={question} 
           totalQuestion={totalQuestion}
