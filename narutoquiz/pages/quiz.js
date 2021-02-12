@@ -60,9 +60,9 @@ function QuestionWidget({ question, totalQuestion, questionIndex, onSubmit }) {
 }
 
 const screenStates = {
-  QUIZ: 'Quiz',
-  LOADING: 'Loading',
-  RESULT: 'Result'
+  QUIZ: 'QUIZ',
+  LOADING: 'LOADING',
+  RESULT: 'RESULT'
 };
 
 export default function QuizPage() {
@@ -74,14 +74,14 @@ export default function QuizPage() {
 
   React.useEffect(() => {
     setTimeout(() => {
-      setScreenState(screenState === screenStates.QUIZ)
+      setScreenState(screenStates.QUIZ)
     }, 1 * 1000);
   }, []);
 
   function handleSubmit(){
     const nextQuestion = questionIndex + 1;
     if (nextQuestion < totalQuestions) {
-      setCurrentQuestion(questionIndex + 1);
+      setCurrentQuestion(nextQuestion);
     } else {
       setCurrentQuestion(screenStates.RESULT);
     }
